@@ -1,0 +1,15 @@
+langchain
+langchain-google-genai
+langchain-community
+langgraph
+deepgram-sdk
+youtube-transcript-api
+pypdf2
+pillow
+python-dotenv
+streamlit
+watchdog
+google-genai
+streamlit-audiorec
+audio-recorder-streamlit
+httpx

@@ -1,0 +1,13 @@
+services:
+  app:
+    build: ./backend
+    container_name: datasmith-app
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
