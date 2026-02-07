@@ -1,185 +1,171 @@
-# 🤖 Datasmith AI - Production-Ready API
+# 🤖 Datasmith AI
 
-AI-powered document analysis with **FastAPI REST API** and clean architecture.
+**Datasmith** is a production-ready, full-stack AI application designed for advanced document analysis and code inspection. It combines a modern, responsive React frontend with a robust FastAPI backend to provide seamless interaction with Google's Gemini models.
 
-![Python](https://img.shields.io/badge/Python-3.11+-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue)
+![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)
+![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-8E75B2?logo=google&logoColor=white)
 
 ## ✨ Features
 
-- **📄 Document Processing** - PDF, Images (OCR), Audio, YouTube
-- **🤖 AI Analysis** - Summarization, Code Analysis, General Chat
-- **🔌 REST API** - Full OpenAPI documentation
-- **📊 Token Tracking** - Real-time cost estimation
-- **☁️ Cloud-Ready** - Deploy to Railway, Render, Fly.io, Cloud Run
+### 🧠 Intelligent Analysis
+- **Multi-Modal Support:** Analyze text, code, PDFs, images (OCR), audio files, and YouTube videos.
+- **Smart Agents:**
+  - **Code Analysis:** Detect bugs, explain logic, and estimate time/space complexity.
+  - **Summarization:** Generate structured summaries or TL;DRs.
+  - **General Chat:** Context-aware conversations.
 
-## 🏗️ Architecture
+### 💻 Modern Frontend
+- **Interactive Chat UI:** Clean interface with markdown support and syntax highlighting.
+- **Voice Input:** Real-time speech-to-text for hands-free interaction.
+- **File Management:** Drag-and-drop file uploads with preview.
+- **Audio Playback:** Text-to-speech playback for AI responses.
+- **Slash Commands:** Quick access to tools like `/code_analysis` and `/summarize`.
 
-```
-backend/
-├── api/v1/routes/      # FastAPI endpoints
-├── core/               # Domain logic
-│   ├── agents/        # AI agents (coordinator, summarize, code analysis)
-│   └── extractors/    # Content extraction (PDF, image, audio, YouTube)
-├── infrastructure/     # External services
-│   ├── llm/           # LLM client factory, pricing, stats
-│   └── config.py      # Settings management
-└── utils/             # Shared utilities
-```
+### ⚙️ Robust Backend
+- **Clean Architecture:** Domain-driven design separating logic, infrastructure, and API layers.
+- **Structured Outputs:** Uses Pydantic for consistent and type-safe AI responses.
+- **Extensible Extractors:** Modular design for adding new data sources.
+- **Observability:** Token usage tracking and cost estimation.
 
-**Clean Code Principles:**
-- PEP-8 compliant
-- No unnecessary comments
-- Shared LLM client (DRY)
-- Full type hints
-- Async-first
+## 🔄 Workflow
 
-## 🚀 Quick Start
+![AI Agent Extraction Flow](./AI%20Agent%20Extraction%20Flow-2026-02-07-231405.png)
 
-### Using Docker
+## 🛠️ Tech Stack
 
-```bash
-# Setup environment
-cp backend/.env.example backend/.env
-# Edit backend/.env with your API keys
+**Frontend:**
+- **Framework:** React 19 (Vite)
+- **Styling:** CSS Modules, Lucide React Icons
+- **Markdown:** React Markdown + Remark GFM
+- **Syntax Highlighting:** React Syntax Highlighter (Prism)
 
-# Start the API
-docker compose up --build
+**Backend:**
+- **API:** FastAPI + Uvicorn
+- **AI Orchestration:** LangChain
+- **Models:** Google Gemini (via `google-genai`)
+- **Audio:** Deepgram SDK
+- **Data extraction:** `pypdf2`, `youtube-transcript-api`, `pillow`
 
-# API: http://localhost:8000
-# Docs: http://localhost:8000/docs
-```
+**Infrastructure:**
+- **Containerization:** Docker & Docker Compose
 
-### Local Development
+## 🚀 Getting Started
 
-```bash
-cd backend
+### Prerequisites
+- Docker & Docker Compose
+- API Keys:
+  - **Google Gemini API Key** (for LLM)
+  - **Deepgram API Key** (for Audio/Voice)
 
-# Install dependencies
-pip install -r requirements.txt
+### ⚡ Quick Start (Docker)
 
-# Set environment variables
-export GOOGLE_API_KEY=your_key
-export DEEPGRAM_API_KEY=your_key
+The easiest way to run Datasmith is using Docker Compose.
 
-# Run the API
-uvicorn main:app --reload
-```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/yourusername/datasmith.git
+    cd datasmith
+    ```
 
-## 📡 API Endpoints
+2.  **Configure Environment:**
+    Create a `.env` file in the `backend/` directory:
+    ```bash
+    cp backend/.env.example backend/.env
+    ```
+    Edit `backend/.env` and add your keys:
+    ```env
+    GOOGLE_API_KEY=your_google_key_here
+    DEEPGRAM_API_KEY=your_deepgram_key_here
+    ENVIRONMENT=development
+    LLM_MODEL=gemini-2.0-flash-exp
+    ```
 
-### Analysis
+3.  **Run the App:**
+    ```bash
+    docker compose up --build
+    ```
 
-```bash
-# Analyze text
-curl -X POST http://localhost:8000/api/v1/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"text": "Your text here", "session_id": "session1"}'
-
-# Analyze file
-curl -X POST http://localhost:8000/api/v1/analyze/file \
-  -F "file=@document.pdf" \
-  -F "session_id=session1"
-```
-
-### Extraction
-
-```bash
-# Extract from PDF
-curl -X POST http://localhost:8000/api/v1/extract/pdf \
-  -F "file=@document.pdf"
-
-# Extract from YouTube
-curl -X POST http://localhost:8000/api/v1/extract/youtube \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://www.youtube.com/watch?v=..."}'
-```
-
-### Health
-
-```bash
-# Health check
-curl http://localhost:8000/health
-
-# Readiness check
-curl http://localhost:8000/health/ready
-```
-
-## ⚙️ Configuration
-
-Environment variables in `.env`:
-
-```env
-GOOGLE_API_KEY=your_google_api_key
-DEEPGRAM_API_KEY=your_deepgram_key
-
-ENVIRONMENT=development
-LLM_MODEL=gemini-2.0-flash-exp
-TEMPERATURE=0.3
-MAX_TOKENS=8192
-
-CORS_ORIGINS=*
-```
-
-## 📊 Supported Models
-
-| Model | Use Case | Cost (per 1M tokens) |
-|-------|----------|---------------------|
-| `gemini-2.0-flash-exp` | Default, fast | $0.10 / $0.40 |
-| `gemini-1.5-flash` | Production | $0.075 / $0.30 |
-| `gemini-1.5-pro` | Complex tasks | $1.25 / $5.00 |
-
-## 🔌 API Documentation
-
-Interactive API docs available at:
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-
-## ☁️ Deployment
-
-### Railway
-
-```bash
-railway up
-```
-
-### Render
-
-```bash
-render deploy
-```
-
-### Fly.io
-
-```bash
-fly deploy
-```
-
-## 🧪 Testing
-
-```bash
-# Health check
-curl http://localhost:8000/health
-
-# Test analysis
-curl -X POST http://localhost:8000/api/v1/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"text": "Test summarization", "session_id": "test"}'
-```
-
-## 📝 Project Structure
-
-- **Clean Architecture** - Domain/Infrastructure/Presentation layers
-- **PEP-8 Compliant** - Professional Python style
-- **Type Safe** - Full type hints throughout
-- **DRY** - Shared LLM client, no duplication
-- **Async-First** - Non-blocking I/O
-
-## 📄 License
-
-MIT License
+4.  **Access:**
+    - **Frontend:** http://localhost:5173 (or port defined in compose)
+    - **Backend API:** http://localhost:8000
+    - **API Docs:** http://localhost:8000/docs
 
 ---
 
-**Production-Ready Backend** - Deploy anywhere, integrate with any frontend
+### 🔧 Manual Setup (Development)
+
+#### Backend
+
+1.  Navigate to `backend`:
+    ```bash
+    cd backend
+    ```
+2.  Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  Set environment variables (or use `.env`):
+    ```bash
+    export GOOGLE_API_KEY=your_key
+    export DEEPGRAM_API_KEY=your_key
+    ```
+4.  Run the server:
+    ```bash
+    uvicorn main:app --reload
+    ```
+
+#### Frontend
+
+1.  Navigate to `frontend`:
+    ```bash
+    cd frontend
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Run the dev server:
+    ```bash
+    npm run dev
+    ```
+
+## 📖 Usage Guide
+
+### Chat Interface
+- Type naturally to chat with the AI.
+- Use **Slash Commands** for specific tasks:
+  - `/code_analysis` - Paste code or attach a file to get a bug report and complexity analysis.
+  - `/summarize` - Get a detailed summary of attached documents or text.
+  - `/tldr` - Quick bullet-point summary.
+
+### File Analysis
+- **Drag & Drop** files (PDF, Images, Audio) directly into the chat window.
+- The AI will automatically extract text/content and use it as context for your query.
+
+### YouTube Analysis
+- Paste a YouTube URL.
+- The backend extracts the transcript (if available) and allows you to ask questions about the video content.
+
+## 📂 Project Structure
+
+```
+datasmith/
+├── backend/                # Python FastAPI Backend
+│   ├── api/                # API Routes & Middleware
+│   ├── core/               # Business Logic & AI Agents
+│   │   ├── agents/         # Summarize, Code Analysis, etc.
+│   │   └── extractors/     # PDF, Image, YouTube, Audio logic
+│   ├── infrastructure/     # LLM Clients & Config
+│   ├── uploads/            # Temp storage for file processing
+│   └── main.py             # App Entrypoint
+├── frontend/               # React Vite Frontend
+│   ├── src/
+│   │   ├── components/     # Chat, UI, & Audio components
+│   │   ├── services/       # API integration
+│   │   └── App.jsx         # Main App Wrapper
+│   └── package.json
+└── docker-compose.yml      # Orchestration
+```
