@@ -1,9 +1,9 @@
 services:
-  app:
+  api:
     build: ./backend
-    container_name: datasmith-app
+    container_name: datasmith-api
     ports:
-      - "8501:8501"
+      - "8000:8000"
     volumes:
       - ./backend:/app
     env_file:

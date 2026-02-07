@@ -1,146 +1,185 @@
-# 🤖 Datasmith AI
+# 🤖 Datasmith AI - Production-Ready API
 
-AI-powered document analysis assistant built with **LangGraph**, **Gemini**, and **Streamlit**.
+AI-powered document analysis with **FastAPI REST API** and clean architecture.
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.52+-red)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue)
 
 ## ✨ Features
 
-- **📄 Document Processing** - PDF, TXT, Images (OCR via Gemini Vision)
-- **🎵 Audio Transcription** - MP3, WAV via Deepgram Nova
-- **🎥 YouTube Analysis** - Auto-extract transcripts from URLs
-- **🎤 Voice Input** - Record and transcribe voice messages
-- **📊 Token Tracking** - Real-time cost estimation and speed metrics
+- **📄 Document Processing** - PDF, Images (OCR), Audio, YouTube
+- **🤖 AI Analysis** - Summarization, Code Analysis, General Chat
+- **🔌 REST API** - Full OpenAPI documentation
+- **📊 Token Tracking** - Real-time cost estimation
+- **☁️ Cloud-Ready** - Deploy to Railway, Render, Fly.io, Cloud Run
 
-### AI Capabilities
+## 🏗️ Architecture
 
-| Feature | Description |
-|---------|-------------|
-| **Summarize** | TL;DR, key points, detailed summary |
-| **Explain** | Break down code or documents |
-| **Sentiment** | Positive/Negative/Neutral analysis |
-| **Chat** | General Q&A about your content |
+```
+backend/
+├── api/v1/routes/      # FastAPI endpoints
+├── core/               # Domain logic
+│   ├── agents/        # AI agents (coordinator, summarize, code analysis)
+│   └── extractors/    # Content extraction (PDF, image, audio, YouTube)
+├── infrastructure/     # External services
+│   ├── llm/           # LLM client factory, pricing, stats
+│   └── config.py      # Settings management
+└── utils/             # Shared utilities
+```
+
+**Clean Code Principles:**
+- PEP-8 compliant
+- No unnecessary comments
+- Shared LLM client (DRY)
+- Full type hints
+- Async-first
 
 ## 🚀 Quick Start
 
-### Using Docker (Recommended)
+### Using Docker
 
 ```bash
-# Clone and enter directory
-git clone <repo-url>
-cd datasmith-ai
-
-# Create .env file
+# Setup environment
 cp backend/.env.example backend/.env
 # Edit backend/.env with your API keys
 
-# Run
+# Start the API
 docker compose up --build
+
+# API: http://localhost:8000
+# Docs: http://localhost:8000/docs
 ```
 
-Open **http://localhost:8501**
-
-### Manual Setup
+### Local Development
 
 ```bash
-# Install dependencies
 cd backend
+
+# Install dependencies
 pip install -r requirements.txt
 
 # Set environment variables
 export GOOGLE_API_KEY=your_key
 export DEEPGRAM_API_KEY=your_key
 
-# Run
-streamlit run main.py
+# Run the API
+uvicorn main:app --reload
+```
+
+## 📡 API Endpoints
+
+### Analysis
+
+```bash
+# Analyze text
+curl -X POST http://localhost:8000/api/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Your text here", "session_id": "session1"}'
+
+# Analyze file
+curl -X POST http://localhost:8000/api/v1/analyze/file \
+  -F "file=@document.pdf" \
+  -F "session_id=session1"
+```
+
+### Extraction
+
+```bash
+# Extract from PDF
+curl -X POST http://localhost:8000/api/v1/extract/pdf \
+  -F "file=@document.pdf"
+
+# Extract from YouTube
+curl -X POST http://localhost:8000/api/v1/extract/youtube \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://www.youtube.com/watch?v=..."}'
+```
+
+### Health
+
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# Readiness check
+curl http://localhost:8000/health/ready
 ```
 
 ## ⚙️ Configuration
 
-Create `backend/.env`:
+Environment variables in `.env`:
 
 ```env
-GOOGLE_API_KEY=your_gemini_api_key
+GOOGLE_API_KEY=your_google_api_key
 DEEPGRAM_API_KEY=your_deepgram_key
-LLM_MODEL=gemini-2.0-flash
+
+ENVIRONMENT=development
+LLM_MODEL=gemini-2.0-flash-exp
 TEMPERATURE=0.3
+MAX_TOKENS=8192
+
+CORS_ORIGINS=*
 ```
 
-### Supported Models
+## 📊 Supported Models
 
-| Model | Rate Limit (Free) | Cost (per 1M tokens) |
-|-------|-------------------|---------------------|
-| `gemini-2.0-flash` | 15 RPM | $0.10 / $0.40 |
-| `gemini-1.5-flash` | 15 RPM | $0.075 / $0.30 |
-| `gemini-1.5-pro` | 2 RPM | $1.25 / $5.00 |
+| Model | Use Case | Cost (per 1M tokens) |
+|-------|----------|---------------------|
+| `gemini-2.0-flash-exp` | Default, fast | $0.10 / $0.40 |
+| `gemini-1.5-flash` | Production | $0.075 / $0.30 |
+| `gemini-1.5-pro` | Complex tasks | $1.25 / $5.00 |
 
-## 📁 Project Structure
+## 🔌 API Documentation
 
-```
-backend/
-├── main.py          # Streamlit UI
-├── agent.py         # LangGraph coordinator agent
-├── extractors.py    # PDF, audio, image, YouTube extractors
-├── voice_chat.py    # Deepgram STT
-├── pricing.py       # Token cost configuration
-├── config.py        # Settings loader
-├── schemas.py       # Data models
-├── utils.py         # Helper functions
-├── Dockerfile
-└── requirements.txt
+Interactive API docs available at:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+
+## ☁️ Deployment
+
+### Railway
+
+```bash
+railway up
 ```
 
-## 🏗️ Agentic Architecture
+### Render
 
-![Datasmith AI Architecture](image.png)
+```bash
+render deploy
+```
 
-### Flow Description
+### Fly.io
 
-| Step | Component | Description |
-|------|-----------|-------------|
-| 1 | **Input** | User provides text, file, voice, or YouTube URL |
-| 2 | **Extract** | Content is extracted to plain text |
-| 3 | **Preprocess** | LangGraph node normalizes input |
-| 4 | **Coordinate** | LLM classifies intent with confidence score |
-| 5 | **Route** | Conditional edge routes to appropriate agent |
-| 6 | **Execute** | Specialized agent processes request |
-| 7 | **Guard** | Guardrails handle errors and fallbacks |
-| 8 | **Respond** | Formatted response with token stats |
+```bash
+fly deploy
+```
 
-## 🛡️ Guardrails
+## 🧪 Testing
 
-- **Rate Limit Handling** - Max 3 retries, clear error messages
-- **Content Limits** - 50K character max to prevent token overflow
-- **Fallback Prompts** - Simpler prompts when JSON parsing fails
-- **Graceful Errors** - User-friendly messages for all failure modes
+```bash
+# Health check
+curl http://localhost:8000/health
 
-## 📊 Token Tracking
+# Test analysis
+curl -X POST http://localhost:8000/api/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Test summarization", "session_id": "test"}'
+```
 
-Real-time display of:
-- Input/Output tokens
-- Tokens per second
-- Total processing time
-- Estimated cost (USD)
+## 📝 Project Structure
 
-## 🎤 Voice Input
+- **Clean Architecture** - Domain/Infrastructure/Presentation layers
+- **PEP-8 Compliant** - Professional Python style
+- **Type Safe** - Full type hints throughout
+- **DRY** - Shared LLM client, no duplication
+- **Async-First** - Non-blocking I/O
 
-1. Click the microphone icon
-2. Speak your message
-3. Recording auto-stops after 2 seconds of silence
-4. Message is transcribed via Deepgram and processed
+## 📄 License
 
-## 📝 License
-
-MIT License - See LICENSE file
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
+MIT License
 
 ---
 
-**Student Project** - Final Year AI/ML
+**Production-Ready Backend** - Deploy anywhere, integrate with any frontend

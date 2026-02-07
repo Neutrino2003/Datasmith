@@ -1,0 +1,41 @@
+/* src/styles/markdown.css */
+.message-ai ul,
+.message-ai ol {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.message-ai p {
+    margin: 0.5rem 0;
+}
+
+.message-ai p:first-child {
+    margin-top: 0;
+}
+
+.message-ai p:last-child {
+    margin-bottom: 0;
+}
+
+.message-ai pre {
+    margin: 0.5rem 0;
+    border-radius: var(--radius-md) !important;
+}
+
+.message-ai code:not(pre code) {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.1rem 0.3rem;
+    border-radius: var(--radius-sm);
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.message-ai strong {
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.message-ai a {
+    color: var(--color-primary);
+    text-decoration: underline;
+}

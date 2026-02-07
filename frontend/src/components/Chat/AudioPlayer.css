@@ -1,0 +1,24 @@
+.audio-player-button {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.6;
+}
+
+.audio-player-button:hover {
+    opacity: 1;
+    background-color: rgba(99, 102, 241, 0.1);
+    color: var(--color-primary);
+}
+
+.audio-player-button.playing {
+    color: var(--color-primary);
+    opacity: 1;
+}

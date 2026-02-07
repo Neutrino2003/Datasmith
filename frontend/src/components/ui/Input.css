@@ -1,0 +1,35 @@
+/* src/components/ui/Input.css */
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.input-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.input-field {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.75rem;
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.input-field::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.5;
+}

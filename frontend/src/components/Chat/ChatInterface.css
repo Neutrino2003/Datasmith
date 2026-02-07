@@ -1,0 +1,215 @@
+/* src/components/Chat/ChatInterface.css */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.chat-container.dragging {
+    border: 2px dashed var(--color-primary);
+    border-radius: var(--radius-lg);
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-lg) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.message-bubble {
+    max-width: 85%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+.message-bubble .audio-player-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.message-user {
+    align-self: flex-end;
+    background-color: var(--color-primary);
+    color: white;
+    border-bottom-right-radius: var(--radius-sm);
+}
+
+.message-ai {
+    align-self: flex-start;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-bottom-left-radius: var(--radius-sm);
+}
+
+.chat-input-area {
+    margin-top: var(--spacing-md);
+    padding: 0 var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: flex-end;
+}
+
+.chat-input-wrapper {
+    position: relative;
+}
+
+/* Command Dropdown */
+.command-dropdown {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-sm);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    z-index: 100;
+}
+
+.command-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.command-item:hover,
+.command-item.selected {
+    background-color: rgba(99, 102, 241, 0.15);
+}
+
+.command-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.command-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.command-label {
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+}
+
+.command-description {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+/* Welcome Message */
+.welcome-message {
+    text-align: center;
+    margin-top: 15vh;
+    color: var(--color-text-muted);
+}
+
+.welcome-message h3 {
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+}
+
+.command-hints {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.command-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.command-hint:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* Spin animation for loader */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Attach Button */
+.attach-button {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.attach-button:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* Drop Overlay */
+.drop-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    border-radius: var(--radius-lg);
+}
+
+.drop-content {
+    text-align: center;
+    color: var(--color-primary);
+}
+
+.drop-content p {
+    margin-top: var(--spacing-md);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+}
